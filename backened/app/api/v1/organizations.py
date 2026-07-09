@@ -6,7 +6,7 @@ from pydantic import BaseModel
 import uuid
 from datetime import datetime
 from fastapi import APIRouter , HTTPException,Depends
-from sqlalchemy.orm import Session
+
 from app.db.models import Organization
 from sqlalchemy import select
 from app.db.session import get_db
@@ -38,8 +38,8 @@ async def create_organization(payload:OrganizationCreate,db:AsyncSession=Depends
 
 @router.get("",response_model=list[OrganizationOut])
 async def list_organizations(db:AsyncSession=Depends(get_db)):
-    result = await db.execute(select(Organization)).scalars().all()
-    return result
+    result = await db.execute(select(Organization))
+    return result.scalars().all()
 
 @router.get("/{org_id}",response_model=OrganizationOut)
 async def get_organization(org_id:uuid.UUID,db:AsyncSession=Depends(get_db)):

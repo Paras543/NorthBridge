@@ -9,8 +9,6 @@ from sqlalchemy import select
 from app.db.session import AsyncSessionLocal
 from app.db.models import Document
 
-# MIME types that indicate a spreadsheet/tabular file. Browsers/clients are
-# inconsistent about what they send, so we also fall back to file extension.
 STRUCTURED_CONTENT_TYPES = {
     "text/csv",
     "application/csv",
@@ -59,7 +57,7 @@ async def load_project_dataset(project_id: str, document_id: str | None = None) 
     if not structured_docs:
         return None
 
-    doc = structured_docs[0]  # most recent structured file
+    doc = structured_docs[0] 
 
     try:
         buffer = io.BytesIO(doc.raw_content)
@@ -68,9 +66,16 @@ async def load_project_dataset(project_id: str, document_id: str | None = None) 
         else:
             df = pd.read_excel(buffer)
     except Exception:
-        return None  # corrupt/unparseable file — fail soft
+        return None  
 
     if df.empty:
         return None
 
     return df
+
+
+
+
+
+
+

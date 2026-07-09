@@ -29,6 +29,7 @@ class SpecialistReport(BaseModel):
     assumptions: str
     findings: list[str]
     confidence: Literal['high','low','moderate']
+    supporting_data: dict | None = None
     
 
 
@@ -40,7 +41,7 @@ class ChallengeCritique(BaseModel):
 
 
 class FinalRecommendation(BaseModel):
-    reccomendations: str
+    recommendations: str
     supporting_points: list[str]
     disagreements: list[str] = Field(default_factory=list)
     risk_flags: list[str] = Field(default_factory=list)

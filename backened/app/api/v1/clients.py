@@ -1,13 +1,11 @@
-import uuid 
-from datetime import date
-from fastapi import APIRouter,Depends ,HTTPException,Query
+import uuid
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 from app.db.session import get_db
-from sqlalchemy.orm import Session
-from app.db.models import Client,Organization
+from app.db.models import Client, Organization
 from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import datetime
-from sqlalchemy import Select
+from sqlalchemy import select
 
 router = APIRouter(prefix="/clients", tags=["clients"])
 class ClientCreate(BaseModel):
@@ -19,12 +17,14 @@ class ClientCreate(BaseModel):
 
 class ClientOut(BaseModel):
     org_id: uuid.UUID
-    id:uuid.UUID
-    name:str
-    company_name:str
+    id: uuid.UUID
+    company_name: str
     industry: str
-    notes: str | None = None 
+    notes: str | None = None
     created_at: datetime
+
+    class Config:
+        from_attributes = True
 
 @router.post("",response_model=ClientOut)
 async def create_client(payload: ClientCreate,db:AsyncSession = Depends(get_db)):
@@ -49,7 +49,7 @@ async def create_client(payload: ClientCreate,db:AsyncSession = Depends(get_db))
 
 @router.get("",response_model=list[ClientOut])
 async def list_clients(org_id: uuid.UUID | None = Query(default=None),db:AsyncSession = Depends(get_db)):
-    query = Select(Client)
+    query = select(Client)
     if org_id is not None:
         query = query.where(Client.org_id == org_id)
     result = await db.execute(query)
@@ -59,7 +59,7 @@ async def list_clients(org_id: uuid.UUID | None = Query(default=None),db:AsyncSe
 async def get_clients(client_id:uuid.UUID,db:AsyncSession = Depends(get_db)):
     client = await db.get(Client,client_id)
     if client is None:
-        raise HTTPException(status_code=404,detail="Not able to found the Client")
+        raise HTTPException(status_code=404,detail="Not able to find the Client")
     return client
 
 

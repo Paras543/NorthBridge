@@ -17,3 +17,8 @@ python-docx
 pgvector
 huggingface_hub
 pandas
+prophet
+scikit-learn
+shap
+PyJWT[crypto]
+httpx

@@ -26,7 +26,7 @@ class DocumentOut(BaseModel):
     description: str | None
     embedding_status: str
     content_type: str
-    uploaded_time: datetime
+    uploaded_at: datetime
 
     class Config:
         from_attributes = True
@@ -62,6 +62,7 @@ async def upload_document(
         description=description,
         name=file.filename,
         content_type=content_type,
+        raw_content=raw_bytes,
         extracted_text=extracted_text,
         embedding_status=embedding_status,
     )

@@ -4,7 +4,7 @@ from sqlalchemy import String, Enum, ForeignKey, LargeBinary, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
-from sqlalchemy import ForeignKey, Integer, Text
+from sqlalchemy import Integer
 from app.db.base import Base
 from pgvector.sqlalchemy import Vector
 

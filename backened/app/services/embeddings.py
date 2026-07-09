@@ -13,7 +13,7 @@ class EmbeddingError(Exception):
     """Raised when the embedding API call fails."""
 
 
-def embed_texts(texts:list[str]) -> list[list[str]]:
+def embed_texts(texts:list[str]) -> list[list[float]]:
     if not texts:
         return []
     
